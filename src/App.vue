@@ -2,14 +2,23 @@
   <div id="app">
     <!-- Header -->
     <header class="p-3">
-      <img class="h-100" src="./assets/img/logo-small.svg" alt="">
+      <img class="h-100" src="./assets/img/logo-small.svg" alt="Logo Spotify">
+      <form class="float-end">
+        <div>
+          <label class="visually-hidden" for="genreSelect">Genre</label>
+          <select class="form-select" id="genreSelect" v-model="selectedGenre">
+            <option selected value="">Seleziona un genere..</option>
+            <option v-for="genre in getGenresList" :key="genre" :value="genre">{{ genre }}</option>
+          </select>
+        </div>
+      </form>
     </header>
     <!-- Main content -->
     <main>
       <div class="container h-100">
         <div class="row h-100 align-items-center">
           <div class="row row-cols-5 gx-5 gy-3">
-            <AlbumCard v-for="album in albumsList" :key="album.title" 
+            <AlbumCard v-for="album in filteredAlbums" :key="album.title" 
             :album-cover-url="album.poster" 
             :album-title="album.title" 
             :album-author="album.author" 
@@ -32,7 +41,28 @@ export default {
   },
   data() {
     return {
-      albumsList: []
+      albumsList: [],
+      selectedGenre: ""
+    }
+  },
+  computed: {
+    getGenresList() {
+      const genresList = [];
+      this.albumsList.forEach((album) =>{
+        if(!genresList.includes(album.genre)) {
+          genresList.push(album.genre);
+        }
+      });
+      return genresList;
+    },
+    filteredAlbums() {
+      const filteredAlbums = [];
+      this.albumsList.forEach((album) =>{
+      if(album.genre.includes(this.selectedGenre)) {
+        filteredAlbums.push(album);
+      }
+      });
+      return filteredAlbums;
     }
   },
   methods: {
