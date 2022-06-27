@@ -3,20 +3,24 @@
         <nav>
             <img class="spotify-logo" src="../assets/img/logo-small.svg" alt="Logo Spotify">
             <GenreSelect :genres-list="genresList" @onGenreSelect="$emit('onGenreSelect', $event)"/>        
+            <ArtistSelect :artists-list="artistsList" @onArtistSelect="$emit('onArtistSelect', $event)"/>        
         </nav>
     </header>
 </template>
 
 <script>
     import GenreSelect from './GenreSelect';
+    import ArtistSelect from './ArtistSelect';
 
     export default {
         components: {
-            GenreSelect
+            GenreSelect,
+            ArtistSelect
         },
 
         props: {
-            genresList: Array
+            genresList: Array,
+            artistsList: Array
         }
     }
 </script>

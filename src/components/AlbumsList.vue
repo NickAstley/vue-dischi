@@ -23,7 +23,8 @@
         },
 
         props: {
-            selectedGenre: String
+            selectedGenre: String,
+            selectedArtist: String
         },
 
         data() {
@@ -43,12 +44,29 @@
                 });
                 return genresList;
             },
+            getArtistsList() {
+                const artistsList = [];
+                this.albumsList.forEach((album) =>{
+                    if(!artistsList.includes(album.author)) {
+                        artistsList.push(album.author);
+                    }
+                });
+                return artistsList;
+            },
             filteredAlbums() {
-                if(!this.selectedGenre) {
+                if(!this.selectedGenre && !this.selectedArtist) {
                     return this.albumsList;
+                } else if (!this.selectedGenre) {
+                    return this.albumsList.filter((album) =>{
+                        return album.author === this.selectedArtist;
+                    });
+                } else if (!this.selectedArtist) {
+                    return this.albumsList.filter((album) =>{
+                        return album.genre === this.selectedGenre;
+                    });
                 }
                 return this.albumsList.filter((album) =>{
-                    return album.genre === this.selectedGenre;
+                    return album.genre === this.selectedGenre && album.author === this.selectedArtist;
                 });
             }
         },
@@ -59,6 +77,7 @@
                 axios.get("https://flynn.boolean.careers/exercises/api/array/music").then((response) => {
                     this.albumsList = response.data.response;
                     this.$emit("onGenresListCreation", this.getGenresList);
+                    this.$emit("onArtistsListCreation", this.getArtistsList);
                     setTimeout(() => {
                         this.loadingAlbums = false;
                     }, 1000);

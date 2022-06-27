@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <TheNavBar :genres-list="genresList" @onGenreSelect="onGenreSelect"/>
-    <AlbumsList :selected-genre="selectedGenre" @onGenresListCreation="onGenresListCreation"/>
+    <TheNavBar :genres-list="genresList" @onGenreSelect="onGenreSelect" :artists-list="artistsList" @onArtistSelect="onArtistSelect" />
+    <AlbumsList :selected-genre="selectedGenre" @onGenresListCreation="onGenresListCreation" :selected-artist="selectedArtist" @onArtistsListCreation="onArtistsListCreation"/>
   </div>
 </template>
 
@@ -20,7 +20,9 @@
     data() {
       return {
         genresList: [],
-        selectedGenre: ""
+        selectedGenre: "",
+        artistsList: [],
+        selectedArtist: ""
       }
     },
 
@@ -30,6 +32,12 @@
       },
       onGenreSelect(genre) {
         this.selectedGenre = genre;
+      },
+      onArtistsListCreation(artistsList) {
+        this.artistsList = artistsList;
+      },
+      onArtistSelect(artist) {
+        this.selectedArtist = artist;
       }
     }    
   }
