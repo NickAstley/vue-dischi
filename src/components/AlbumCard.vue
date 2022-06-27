@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="album-card p-4 text-center h-100">
-            <img class="w-100 mb-3" :src="album.poster" :alt="album.title">
+            <img class="w-100 mb-3" :src="albumPoster" :alt="album.title" @error="onImageLoadError">
             <h4 class="text-white text-uppercase mb-3">{{ album.title }}</h4>
             <div class="album-author">{{ album.author }}</div>
             <span>{{ album.year }}</span>
@@ -13,6 +13,22 @@
     export default {
         props: {
             album: Object
+        },
+
+        data() {
+            return {
+                albumPoster: ""
+            }
+        },
+
+        methods: {
+            onImageLoadError() {
+                this.albumPoster = "https://upload.wikimedia.org/wikipedia/en/2/2c/Bon_Jovi_New_Jersey.jpg";
+            }
+        },
+
+        mounted() {
+            this.albumPoster = this.album.poster;
         }
     }
 </script>
